@@ -1,0 +1,163 @@
+---
+title: "HIRA"
+always_allow_html: yes
+output: rmarkdown::github_document
+---
+```{r setup, echo=F, message=F, warning=F}
+load("D:/Dropbox (Cambridge University)/2019_Cambridge/[Programming]/R/HIRA/.RData")
+```
+## 1. 심평원 HIRA자료 구득 배경
+* 동기: 연구자는 보행자의 대기오염물질(미세먼지,이산화질소 등)의 장기노출 시뮬레이션 결과를 검증하는 목적으로 한국건강심사평가원 자료를 신청하게 되었다.
+* 신청자료명: 자료는 HIRA 환자 빅데이터에서 전체환자데이터셋 (전체환자 연령별 1% 층화추출)에서 2015, 2016년자료를 신청하였다.
+* 신청절차 및 소요기간: 2018년 5월 1주에 학위연구를 위한 서명 후 자료신청을 하였고, 5월 4주에 CD형태로 결과를 받았다.
+* 자료지급조건: 자료사용중 외부유출을 엄금하며, 학위종료 후 자료는 파기하기로 하였다.
+
+
+## 2. 전체환자데이터셋 자료소개
+
+
+### 2.1. 명세서 일반내역 (200)
+
+* SPEC\_ID\_SNO 명세서조인키
+* DMD\_TP\_CD 청구구분코드
+* DMD\_FRM\_CD 청구형태코드
+* FOM\_TP\_CD 서식구분코드
+* JID 수진자개인식별대체키
+* AGG 연령군
+* SelectionProb 추출확률
+* SamplingWeight 샘플가중치
+* SEX\_TP\_CD 성별구분
+* PAT\_AGE 수진자연령
+* INSUP\_TP\_CD 보험자종별구분코드
+* MAIDCL\_CD 의료급여종별코드
+* MSICK\_CD 주상병코드
+* SSICK\_CD 부상병코드
+* DGRSLT\_TP\_CD 진료결과구분코드
+* DGSBJT\_CD 진료과목코드
+* SHW\_SBJT\_CD 표시과목코드
+* IFLD\_DTL\_SPC\_SBJT\_CD 내과세부과목코드
+* DMD\_DRG\_NO 청구DRG번호
+* FST\_IPAT\_DD 최초입원일자
+* IPAT\_ARIV\_PTH\_TP\_CD 입원도착경로구분코드
+* OINJ\_TP\_CD 공상구분코드
+* RECU\_DDCNT 요양일수
+* VST\_DDCNT 입내원일수
+* RECU\_FR\_DD 요양개시일자
+* RECU\_TO\_DD 요양종료일자
+* RVD\_RPE\_TAMT\_AMT 심사결정요양급여비용총액
+* RVD\_P100LT\_TOT\_AMT 심사결정100분의100미만 총액
+* RVD\_SLF\_BRDN\_AMT 심사결정본인부담금
+* RVD\_INSUP\_BRDN\_AMT 심사결정보험자부담금
+* SOPR\_YN 수술여부
+* PRCL\_SYM\_TP\_CD 특정기호구분코드
+* YID 요양기관식별대체키
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(kableExtra)
+
+nis200 %>% 
+  slice(1:5) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  
+```
+
+### 2.2 진료내역 (300)
+
+* SPEC ID SNO: 명세서조인키
+* LN NO: 줄번호
+* CZ ITEM: CD 항목코드
+* DIV TY: CD 분류코드구분
+* DIV CD: 분류코드
+* SP1 SP2 TP: CD 1 2구분코드
+* FQ1 MDCT QTY: 1회투약량
+* DY1 MDCT QTY: 1일투약량
+* DY1 INJC QTY EXEC FQ: 1일투여량 또는 실시횟수
+* TOT INJC DDCNT EXEC FQ: 총투여일수 또는 실시횟수
+* TOT USE QTY OR EXEC FQ: 총사용량
+* UNPRC: 단가
+* AMT: 금액
+* ADDC ADT AMT: 가산적용금액
+* GNL NM CD: 일반명코드
+
+```{r, echo=F, message=F, warning=F}
+#library(tidyverse)
+#library(kableExtra)
+
+nis300 %>% 
+  slice(1:5) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  
+```
+
+
+### 2.3. 상병내역 (400)
+
+* SPEC\_ID\_SNO 명세서조인키
+* SICK\_SNO 상병일련번호
+* SICK\_DGSBJT\_CD 상병진료과목코드
+* SICK\_CD 상병코드
+* DMD\_DGSBJT\_CD 청구진료과목코드
+```{r, echo=F, message=F, warning=F}
+#library(tidyverse)
+#library(kableExtra)
+
+nis400 %>% 
+  slice(1:5) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  
+```
+
+
+### 2.4. 원외처방내역 (530)
+
+* SPEC\_ID\_SNO 명세서조인키
+* PRSCP\_GRANT\_NO 처방전교부번호
+* LN\_NO 줄번호
+* FQ1\_MDCT\_QTY 1회투약량
+* DY1\_MDCT\_QTY 1일투약량
+* TOT\_INJC\_DDCNT\_EXEC\_FQ 총투여일수 또는 실시횟수
+* TOT\_USE\_QTY\_OR\_EXEC\_FQ 총사용량
+* UNPRC 단가
+* AMT 금액
+* GNL\_NM\_CD 일반명코드
+```{r, echo=F, message=F, warning=F}
+#library(tidyverse)
+#library(kableExtra)
+
+nis530 %>% 
+  slice(1:5) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  
+```
+
+
+### 2.5. 요양기관현황정보
+
+* YID 요양기관 대체키
+* SIDO\_CD 시도코드
+* RECU\_CL\_CD 요양기관 종별코드
+* ORG\_TP\_CD 설립구분
+* BED\_GRADE 병상수준
+* per\_50bed\_doctor 50병상 당 의사 수
+* per\_50bed\_d\_dental 50병상 당 치과의사 수
+* per\_50bed\_d\_oriental 50병상 당 한의사 수
+* per\_50bed\_nurse 50병상 당 간호사 수
+* CT CT 유무
+* MRI MRI 유무
+* PET PET 유무
+
+```{r, echo=F, message=F, warning=F}
+#library(tidyverse)
+#library(kableExtra)
+
+nisykiho %>% 
+  slice(1:5) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  
+```
